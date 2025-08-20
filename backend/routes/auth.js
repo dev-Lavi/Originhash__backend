@@ -47,7 +47,7 @@ router.get(
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.redirect("https://originhashhh.vercel.app/dashboard");
+      res.redirect("https://originhashhh.vercel.app/services");
     } catch (error) {
       console.error("OAuth error:", error);
       res.redirect("https://originhashhh.vercel.app/?error=oauth_failed");
