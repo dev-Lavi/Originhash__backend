@@ -11,7 +11,6 @@ const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
   if (!name || !email || !password || !role) {
-    //validate
     return res.status(400).json({
       message: "All fields are required",
     });
@@ -21,16 +20,16 @@ const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
-        message: "User already exsists",
+        message: "User already exists",
       });
     }
+
     const user = await User.create({
       name,
       email,
       password,
       role: role || "individual",
     });
-    console.log(user);
 
     if (!user) {
       return res.status(500).json({
@@ -38,18 +37,18 @@ const registerUser = async (req, res) => {
       });
     }
 
-    //    generate verification token
-
+    // Generate verification token
     const token = crypto.randomBytes(32).toString("hex");
 
-    // save token in database
-
+    // Save token in database
     user.verificationToken = token;
     await user.save();
 
-    // send token to user via email
+    console.log('Generated token:', token);
+    console.log('User saved with token:', user.verificationToken);
 
-    const verificationLink = `https://origin-hash.vercel.app/verify/${token}`;
+    // Make sure the verification link matches your frontend route
+    const verificationLink = `http://localhost:5173/verify/${token}`;
 
     await sendEmail({
       to: user.email,
@@ -58,11 +57,12 @@ const registerUser = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "User registered successfully",
+      message: "User registered successfully. Please check your email to verify your account.",
       success: true,
     });
   } catch (e) {
-    res.status().json({
+    console.error('Registration error:', e);
+    res.status(500).json({  // Fixed: Added status code
       message: "User not registered",
       success: false,
     });
@@ -70,26 +70,52 @@ const registerUser = async (req, res) => {
 };
 
 const verifyUser = async (req, res) => {
-  console.log(req.params);
-  const { token } = req.params;
-  console.log(token);
-  if (!token) {
-    return res.status(400).json({
-      message: "Token is required",
+  try {
+    console.log('Request params:', req.params);
+    const { token } = req.params;
+    console.log('Received token:', token);
+    
+    if (!token) {
+      return res.status(400).json({
+        message: "Token is required",
+        success: false,
+      });
+    }
+
+    const user = await User.findOne({ verificationToken: token });
+    console.log('User found:', user ? 'Yes' : 'No');
+    
+    if (user) {
+      console.log('Stored token:', user.verificationToken);
+      console.log('Received token:', token);
+      console.log('Tokens match:', user.verificationToken === token);
+    }
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid or expired token",
+        success: false,
+      });
+    }
+
+    // Update user verification status
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    console.log('User verified successfully');
+
+    res.status(200).json({ 
+      message: "Email verified successfully!",
+      success: true,
+    });
+  } catch (error) {
+    console.error('Verification error:', error);
+    res.status(500).json({
+      message: "Server error during verification",
+      success: false,
     });
   }
-  const user = await User.findOne({ verificationToken: token });
-  if (!user) {
-    return res.status(400).json({
-      message: "invalid token",
-    });
-  }
-
-  user.isVerified = true;
-  user.verificationToken = undefined;
-  await user.save();
-
-  res.send('Email verified successfully!');
 };
 
 const loginUser = async (req, res) => {
@@ -194,7 +220,7 @@ const forgotPassword = async (req, res) => {
   user.resetPasswordExpiry = Date.now() + 60 * 60 * 1000; // 1 hour
   await user.save();
 
-  const resetLink = `https://origin-hash.vercel.app/reset-password/${resetToken}`;
+  const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
 
   await sendEmail({
     to: user.email,

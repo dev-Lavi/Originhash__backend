@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
-  password: String,
+password: {
+  type: String,
+},
   role: {
     type: String,
     enum: ['admin', 'individual', 'corporate'],
@@ -40,7 +42,7 @@ userSchema.virtual('isLocked').get(function () {
 
 // Hash the password before saving
 userSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
+  if (this.isModified('password') && this.password) {
     this.password = await bcrypt.hash(this.password, 10);
   }
   next();
