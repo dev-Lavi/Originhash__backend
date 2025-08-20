@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
     console.log('User saved with token:', user.verificationToken);
 
     // Make sure the verification link matches your frontend route
-    const verificationLink = `https://originhashh.vercel.app/verify/${token}`;
+    const verificationLink = `https://originhashhh.vercel.app/verify/${token}`;
 
     await sendEmail({
       to: user.email,
@@ -220,7 +220,7 @@ const forgotPassword = async (req, res) => {
   user.resetPasswordExpiry = Date.now() + 60 * 60 * 1000; // 1 hour
   await user.save();
 
-  const resetLink = `https://originhashh.vercel.app/reset-password/${resetToken}`;
+  const resetLink = `https://originhashhh.vercel.app/reset-password/${resetToken}`;
 
   await sendEmail({
     to: user.email,

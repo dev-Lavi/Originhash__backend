@@ -18,7 +18,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "https://originhashh.vercel.app/?error=google_failed",
+    failureRedirect: "https://originhashhh.vercel.app/?error=google_failed",
   }),
   async (req, res) => {
     try {
@@ -30,7 +30,7 @@ router.get(
 
       if (!existingUser) {
         return res.redirect(
-          `https://originhashh.vercel.app/register?email=${encodeURIComponent(
+          `https://originhashhh.vercel.app/register?email=${encodeURIComponent(
             email
           )}&name=${encodeURIComponent(name)}&error=not_registered`
         );
@@ -47,10 +47,10 @@ router.get(
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.redirect("https://originhashh.vercel.app/dashboard");
+      res.redirect("https://originhashhh.vercel.app/dashboard");
     } catch (error) {
       console.error("OAuth error:", error);
-      res.redirect("https://originhashh.vercel.app/?error=oauth_failed");
+      res.redirect("https://originhashhh.vercel.app/?error=oauth_failed");
     }
   }
 );
