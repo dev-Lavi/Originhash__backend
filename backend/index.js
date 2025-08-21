@@ -41,7 +41,7 @@ app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://originhashhh.vercel.app"], 
+    origin: ["http://localhost:5173", "https://originhash-frontend-ats3.vercel.app"], 
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // ✅ allow cookies + auth headers
