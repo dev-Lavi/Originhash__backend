@@ -170,7 +170,7 @@ const loginUser = async (req, res) => {
     user.lockUntil = undefined;
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_USER, {
       expiresIn: "1d",
     });
 

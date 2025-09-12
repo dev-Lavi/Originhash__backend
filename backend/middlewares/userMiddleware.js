@@ -4,14 +4,18 @@ import User from "../models/userModel.js";
 export const userProtect = async (req, res, next) => {
   let token;
 
+  console.log('Authorization header:', req.headers.authorization);
+
   // Check if Authorization header has Bearer token
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
     try {
       // Get token from header
       token = req.headers.authorization.split(" ")[1];
 
+      console.log('Extracted token:', token);
+
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_USER);
 
       // Attach user to request (excluding password)
       req.user = await User.findById(decoded.id).select("-password");
