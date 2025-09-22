@@ -42,7 +42,7 @@ export const loginAdminOrSuperAdmin = async (req, res) => {
     // ✅ JWT Token generation
     const token = jwt.sign(
       { id: user._id, isSuperAdmin: user.isSuperAdmin },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET_ADMIN,
       { expiresIn: "1d" }
     );
 

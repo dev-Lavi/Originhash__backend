@@ -16,7 +16,7 @@ export const isLoggedIn = async (req,res,next) => {
             })
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_USER)
         console.log("Decoded token", decoded); // { id: 'user_id', iat: timestamp, exp: timestamp }
 
         req.user = decoded

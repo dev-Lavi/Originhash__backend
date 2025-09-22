@@ -200,7 +200,7 @@ const logoutUser = async (req, res) => {
       secure: true,
     });
     return res.status(200).json({
-      message: "user loggedout",
+      message: "user logged out",
     });
   } catch (error) {
     res.status(500).json({
