@@ -14,14 +14,14 @@ router.use(express.urlencoded({ extended: true }));
 
 router.post("/login", loginAdminOrSuperAdmin);
 router.post('/course', verifyAdmin, upload.single('thumbnail'), createCourse);
-router.get('/courses', verifyAdmin, getAllCourses);
+router.get('/courses', getAllCourses);
 router.delete('/course/:id', verifyAdmin, deleteCourse);
 
-router.post('/course/addModules/:id', verifyAdmin, addModule);
+router.post('/course/addModules/:id', addModule);
 router.get('/course/modules/fetchCourseDetails/:id', fetchCourseDetails);
 
 // IMPORTANT: this uses multer to handle the 'videoFile' field
 router.post('/course/module/addLesson/:moduleId', upload.single('videoFile'), addLessonToModule);
-router.delete('/course/:courseId/module/:moduleId', verifyAdmin, deleteModule);
+router.delete('/course/:courseId/module/:moduleId', deleteModule);
 
 export default router;

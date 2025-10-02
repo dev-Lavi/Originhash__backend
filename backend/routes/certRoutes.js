@@ -1,10 +1,10 @@
 import express from "express";
 import { previewCertificate, issueCertificate } from "../controller/certController.js";
-import { protect } from "../middlewares/adminauthMiddleware.js";
+import { verifyAdmin } from "../middlewares/verifyAdmin.js";
 
 const router = express.Router();
 
-router.post("/preview", protect, previewCertificate);
-router.post("/issue", protect, issueCertificate);
+router.post("/preview", verifyAdmin, previewCertificate);
+router.post("/issue", verifyAdmin, issueCertificate);
 
 export default router;

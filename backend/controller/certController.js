@@ -87,18 +87,20 @@ export const issueCertificate = async (req, res) => {
     });
     await cert.save();
 
-    // Create transporter
+    // Create Postmark SMTP transporter
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.postmarkapp.com",
+      port: 587,  // or 25, 2525
+      secure: false, // true for port 465
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.POSTMARK_SMTP_API_TOKEN,  // your SMTP Token Access Key
+        pass: process.env.POSTMARK_SMTP_SECRET_KEY, // your SMTP Token Secret Key
       },
     });
 
     // Send email
     await transporter.sendMail({
-      from: `"Certificate Admin" <${process.env.EMAIL_USER}>`,
+      from: `"Certificate Admin" <${process.env.POSTMARK_VERIFIED_SEND_EMAIL}>`,
       to: studentEmail,
       subject: "🎉 Your Certificate Has Been Issued",
       html: `
