@@ -98,7 +98,7 @@ export const issueCertificate = async (req, res) => {
 
     // Send email
     await transporter.sendMail({
-      from: `"Certificate Admin" <${process.env.EMAIL_USER}>`,
+      from: `"Certificate Admin" <${process.env.EMAIL_USER}>`,  
       to: studentEmail,
       subject: "🎉 Your Certificate Has Been Issued",
       html: `
