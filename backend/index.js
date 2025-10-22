@@ -26,6 +26,9 @@ import adminRoutes from "./routes/adminRoutes.js";
 import verifyCertRoutes from "./routes/verifyCertRoutes.js";
 import listCertificateRoutes from "./routes/listCertificateRoutes.js";
 import listVerifiedCertificateRoutes from "./routes/listVerifiedCertificateRoutes.js";
+import headerRegionRoutes from './routes/headerRegionRoutes.js';
+import footerRegionRoutes from './routes/footerRegionRoutes.js';
+import coreMenuRoutes from './routes/coreMenuRoutes.js';
 
 import certRoutes from "./routes/certRoutes.js";
 
@@ -70,7 +73,8 @@ app.use(passport.session());
 db();
 
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 
 
@@ -81,6 +85,9 @@ app.use("/api/v1/certs", certRoutes);
 app.use("/api/v1/cert", verifyCertRoutes);
 app.use("/api/v1/certificates", listCertificateRoutes);
 app.use("/api/v1/certificates", listVerifiedCertificateRoutes);
+app.use('/api/header', headerRegionRoutes);
+app.use('/api/footer-region', footerRegionRoutes);
+app.use('/api/core-menu', coreMenuRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
