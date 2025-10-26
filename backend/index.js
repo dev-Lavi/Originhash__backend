@@ -29,6 +29,8 @@ import listVerifiedCertificateRoutes from "./routes/listVerifiedCertificateRoute
 import headerRegionRoutes from './routes/headerRegionRoutes.js';
 import footerRegionRoutes from './routes/footerRegionRoutes.js';
 import coreMenuRoutes from './routes/coreMenuRoutes.js';
+import footerRoutes from './routes/footerRoutes.js';
+import userSectionRoutes from "./routes/userSectionRoutes.js";
 
 import certRoutes from "./routes/certRoutes.js";
 
@@ -88,6 +90,8 @@ app.use("/api/v1/certificates", listVerifiedCertificateRoutes);
 app.use('/api/header', headerRegionRoutes);
 app.use('/api/footer-region', footerRegionRoutes);
 app.use('/api/core-menu', coreMenuRoutes);
+app.use('/api/footer', footerRoutes);
+app.use('/api/usersection', userSectionRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
