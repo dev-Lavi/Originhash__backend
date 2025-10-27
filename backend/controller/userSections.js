@@ -1,5 +1,6 @@
 import UserSection from '../models/userSection.js';  // or whatever you named your model
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 // Add User
 export const addUser = async (req, res) => {
@@ -112,6 +113,81 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch users',
+      error: error.message
+    });
+  }
+};
+
+// Get User Profile
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // From JWT token
+
+    const user = await UserSection.findById(userId).select('-password');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch user profile',
+      error: error.message
+    });
+  }
+};
+
+// Update User Profile
+export const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // From JWT token
+    const { username, email, password } = req.body;
+
+    const user = await UserSection.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Update fields
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (password) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+    if (req.file) {
+      user.profilePicture = `/uploads/images/${req.file.filename}`;
+    }
+
+    await user.save();
+
+    // Return updated user without password
+    const updatedUser = await UserSection.findById(userId).select('-password');
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      data: updatedUser
+    });
+
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update profile',
       error: error.message
     });
   }

@@ -31,6 +31,8 @@ import footerRegionRoutes from './routes/footerRegionRoutes.js';
 import coreMenuRoutes from './routes/coreMenuRoutes.js';
 import footerRoutes from './routes/footerRoutes.js';
 import userSectionRoutes from "./routes/userSectionRoutes.js";
+import companyInfoRoutes from './routes/companyInfoRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 
 import certRoutes from "./routes/certRoutes.js";
 
@@ -92,6 +94,8 @@ app.use('/api/footer-region', footerRegionRoutes);
 app.use('/api/core-menu', coreMenuRoutes);
 app.use('/api/footer', footerRoutes);
 app.use('/api/usersection', userSectionRoutes);
+app.use('/api/company-info', companyInfoRoutes);
+app.use('/api/profile', profileRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
